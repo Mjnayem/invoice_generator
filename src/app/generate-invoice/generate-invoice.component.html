@@ -1,0 +1,423 @@
+
+<div class="container" id="invoice-page">
+  <div class="row">
+    <div class="col-md-3">
+
+      <mat-card class="example-card currency-cart">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>Currency</mat-card-title>
+        </mat-card-header>
+        
+        <mat-card-content class="">
+          <mat-form-field>
+            <select [(ngModel)]="currencySelected" (change)="currencySelectedTypeChange($event.target.value)">
+                <option value="usd" selected>USD</option>
+              <option *ngFor="let currency of currencys" [value]="currency.symbol" >
+                {{currency.name}}
+              </option>
+            </select>
+            <br>
+            <input type="checkbox" [(ngModel)]="isChecked" ><span>Unambiguous currency.</span>
+          </mat-form-field>
+        </mat-card-content>
+        
+      </mat-card>
+
+
+
+      <mat-card class="example-card discount-cart">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>Discount</mat-card-title>
+        </mat-card-header>
+        
+        <mat-card-content>
+            <select [(ngModel)]="discountSelected" (change)="discountTypeChange($event.target.value)">
+              <option  value="flat" selected>Flat Discounr</option>
+              <option  value="persantage" >% Discount</option>
+              <option  value="off" >Off</option>
+            </select>
+        </mat-card-content>
+        
+      </mat-card>
+
+
+
+      <mat-card class="example-card shipping-cart">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>Shipping</mat-card-title>
+        </mat-card-header>
+        
+        <mat-card-content>
+            <select [(ngModel)]="shippingSelected" (change)="shippingTypeChange($event.target.value)">
+                <option  value="on" >On</option>
+                <option  value="off" >Off</option>
+              </select>
+        </mat-card-content>
+        
+      </mat-card>
+
+
+
+      <mat-card class="example-card tax-cart">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>Tax</mat-card-title>
+        </mat-card-header>
+        
+        <mat-card-content *ngIf="taxSelected">
+            <select [(ngModel)]="taxSelected" (change)="taxTypeChange($event.target.value)">
+                <option  value="vat" >VAT</option>
+                <option  value="flat" >Flat Tax</option>
+                <option  value="persantage" >% Tax</option>
+                <option  value="off" >Off</option>
+              </select>
+        </mat-card-content>
+        
+      </mat-card>
+
+
+
+      <mat-card class="example-card downloar-invoice-cart">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <button mat-raised-button color="primary" class="add-row" (click)="createPdf()">Download Invoice</button>
+        </mat-card-header>
+      
+      </mat-card>
+
+
+
+      <mat-card class="example-card save-data-cart">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>Saved Data</mat-card-title>
+        </mat-card-header>
+        
+        <mat-card-content>
+            <button mat-raised-button color="warn" class="add-row" (click)="deleteLocalData()">Delete Local Data</button>
+         <p>Free Invoice Generator does not store any of your settings on its servers. Instead, all of your settings are saved to your browser through the LocalStorage mechanism. Clicking the above button will delete the data that Free Invoice Generator has saved to your computer so far. Note: the invoices
+            are generated server-side where they are kept for up to 10 minutes before they are garbage-collected.</p>
+        </mat-card-content>
+        
+      </mat-card>
+
+
+
+      <mat-card class="example-card get-update-cart">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>Get Updates</mat-card-title>
+        </mat-card-header>
+        
+        <mat-card-content>
+         <p>Enter your e-mail address below if you'd like to receive updates whenever we launch a new feature!</p>
+
+         <form>
+           <input type="email" name="email" placeholder="Your email address">
+           <button mat-raised-button color="primary" class="add-row" >Subscribe</button>
+         </form>
+        </mat-card-content>
+        
+      </mat-card>
+
+
+    </div>
+    <div class="col-md-9">
+      
+      
+
+
+      <mat-card class="example-card main-cart" id="main-invoice">
+        <mat-card-header class="heading">
+          <div mat-card-avatar class="example-header-image"></div>
+          
+          <mat-card-subtitle >Everything below this point is editable. Click on things and go crazy!</mat-card-subtitle>
+        </mat-card-header>
+      
+        <mat-card-content>
+          <div class="row">
+            <div class="col-md-9">
+
+              <h4>From</h4>
+              <input type="text" class="table-input-form" placeholder="Name"  [(ngModel)]="fromAddress.name" (keyup)="updateFromAddress()">
+              <input type="text" class="table-input-form" placeholder="Cpmpany"  [(ngModel)]="fromAddress.company" (keyup)="updateFromAddress()">
+              <input type="text" class="table-input-form" placeholder="Address" [(ngModel)]="fromAddress.address" (keyup)="updateFromAddress()">
+              <input type="text" class="table-input-form" placeholder="City, State, Zip" [(ngModel)]="fromAddress.city_zip" (keyup)="updateFromAddress()">
+              
+              <input type="text" class="table-input-form" placeholder="Country" [(ngModel)]="fromAddress.country" (keyup)="updateFromAddress()">
+
+
+            </div>
+
+            <div class="col-md-3">
+              <h2>INVOICE</h2>
+              </div>
+          </div>
+
+
+
+
+
+
+
+          <div class="row">
+              <div class="col-md-8">
+  
+              <h4>To</h4>
+              <input type="text" class="table-input-form" placeholder="Company" [(ngModel)]="toAddress.name" (keyup)="updateToAddress()">
+              <input type="text" class="table-input-form" placeholder="Address" [(ngModel)]="toAddress.address" (keyup)="updateToAddress()">
+              <input type="text" class="table-input-form" placeholder="City, State, Zip" [(ngModel)]="toAddress.city_zip" (keyup)="updateToAddress()">
+              <input type="text" class="table-input-form" placeholder="Country" [(ngModel)]="toAddress.country" (keyup)="updateToAddress()">
+              
+              </div>
+  
+              <div class="col-md-4">
+                <div class="row">
+                  <div class="col-md-5"><span>INVOICE#</span></div>
+                  <div class="col-md-7"><input type="text" class="table-input-form" [(ngModel)]="invoiceData.invoiceName" (keyup)="updateInvoiceData()"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5"><span>Invoice Date</span></div>
+                    <div class="col-md-7"><input type="text" class="table-input-form"  [(ngModel)]="invoiceData.invoiceDate" (keyup)="updateInvoiceData()"></div>
+                  </div>
+
+                  <div class="row">
+                      <div class="col-md-5"><span>Due Date</span></div>
+                      <div class="col-md-7"><input type="text" class="table-input-form" [(ngModel)]="invoiceData.dueDate" (keyup)="updateInvoiceData()"></div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+            <div class="row">
+
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Action</th>
+                        <th scope="col">Item</th>
+                        <th scope="col">HRS/QTY</th>
+                        <th scope="col">Rate</th>
+                        <th scope="col" *ngIf="taxSelected=='vat'">Vat</th>
+                        <th scope="col">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor=" let item of itemsData" >
+                        <td>
+                          <a (click)="removeRow(item.id)">
+                              <img src="../../assets/icons/delete.svg" class="delete-icon">
+                          </a>
+                        </td>
+                        <td>
+                          <input type="text" class="table-input-form" [(ngModel)]="item.itemName" (keyup)="updateProductData()">
+                        
+                        </td>
+
+                        <td>
+                            <input type="text" class="table-input-form" [(ngModel)]="item.itexQuantity" (keyup)="updateProductData()">
+                          </td>
+
+                          <td class="currency-symbol">
+                              <input type="text" class="table-input-form input-with-symbol" [(ngModel)]="item.itemRate" (keyup)="updateProductData()">
+                              <span>{{currencySelected}}</span>
+                            </td>
+
+                            <td *ngIf="taxSelected=='vat'">
+                                <input type="text" class="table-input-form input-with-symbol" [(ngModel)]="item.itemVat" (keyup)="updateProductData()"  >
+                                <span>{{currencySelected}}</span>
+                             </td>
+                             <td>
+                                <input type="text" class="table-input-form input-with-symbol" [(ngModel)]="item.amount" (keyup)="updateProductData()">
+                                <span>{{currencySelected}}</span>
+                             </td>
+                        
+                        
+                      </tr>
+                    
+                     
+                    </tbody>
+                  </table>
+
+            </div>
+            <hr>
+
+
+            <form >
+              <button mat-raised-button color="primary" class="add-row" (click)="addNewRow()">+ Add Item</button>
+            </form>
+
+
+
+            <div class="row">
+
+              <div class="col-md-8">
+          
+              </div>
+              <div class="col-md-4" *ngIf="totalAmounts">
+                  <div class="row">
+                      <div class="col-md-5"><span>Subtotal</span></div>
+                      <div class="col-md-7"><input type="text" class="table-input-form input-with-symbol"  [(ngModel)]="totalAmounts.subTotal" (keyup)="updateTotalAmounts()">
+                        <span>{{currencySelected}}</span>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="discountSelected!=='off'">
+                        <div class="col-md-5"><span>Discount</span></div>
+                        <div class="col-md-7"><input type="text" class="table-input-form input-with-symbol" [(ngModel)]="totalAmounts.discount" (keyup)="updateTotalAmounts()">
+                          <span>{{currencySelected}}</span>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="shippingSelected!=='off'">
+                          <div class="col-md-5"><span>Shipping</span></div>
+                          <div class="col-md-7"><input type="text" class="table-input-form input-with-symbol" [(ngModel)]="totalAmounts.shipping" (keyup)="updateTotalAmounts()">
+                            <span>{{currencySelected}}</span>
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="taxSelected!=='off'">
+                            <div class="col-md-5" *ngIf="vatOrTax"><span>{{vatOrTax}}</span></div>
+                            <div class="col-md-7"><input type="text" class="table-input-form input-with-symbol" [(ngModel)]="totalAmounts.vat" (keyup)="updateTotalAmounts()">
+                              <span>{{currencySelected}}</span>
+                            </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-5"><span>Total</span></div>
+                              <div class="col-md-4"><input type="text" class="table-input-form input-with-symbol" [(ngModel)]="totalAmounts.total" (keyup)="updateTotalAmounts()">
+                                <span>{{currencySelected}}</span>
+                              </div>
+                              <div class="col-md-3" *ngIf="isChecked" style="font-weight: bold;">({{currencySelected}})</div>
+                            </div>
+                  
+              </div>
+            </div>
+
+        </mat-card-content>
+      </mat-card>
+
+
+
+
+    </div>
+  </div>
+</div>
+
+
+
+<div class="only-for-print">
+  <div id="final-invoice" > 
+    <div style=" position: relative;" >
+  
+        <div style=" padding: 20px 50px; width: 50%;" *ngIf="fromAddress">
+            <h4 style="font-weight: bold;">From</h4>
+            <span>{{fromAddress.name}}</span><br>
+            <span>{{fromAddress.company}}</span><br>
+            <span>{{fromAddress.address}}</span><br>
+            <span>{{fromAddress.city_zip}}</span><br>
+            <span>{{fromAddress.country}}</span>
+            
+        </div>
+  
+  
+        <div style="  text-align: right;text-align: right;width: 50%;position: absolute;top: 0px;right: 0px;">
+            <h3 style=" text-align: right; padding: 20px 50px;font-weight: bold;">
+                INVOICE
+            </h3>
+        </div>
+  
+    </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div style=" position: relative;">
+  
+            <div style=" padding: 20px 50px; width: 50%" *ngIf="toAddress">
+                <h4 style="font-weight: bold;">To</h4>
+                <span>{{toAddress.name}}</span><br>
+                <span>{{toAddress.address}} </span><br>
+                <span>{{toAddress.city_zip}}</span><br>
+                <span>{{toAddress.country}}</span>
+                
+                
+            </div>
+    
+    
+            <div style="width: 50%;position: absolute;top: 0;right: 0;" *ngIf="invoiceData">
+                <div style="text-align: right; padding: 20px 50px;">
+                        <span><b>Invoice#</b><small style="margin-left: 20px;font-size: 15px;">{{invoiceData.invoiceName}}</small></span><br>
+                        <span><b>Invoice Date</b><small style="margin-left: 20px;font-size: 15px;">{{invoiceData.invoiceDate}}</small></span><br>
+                        <span><b>Due Date</b><small style="margin-left: 20px;font-size: 15px;">{{invoiceData.dueDate}}</small></span>
+  
+                </div>
+                
+            </div>
+    
+    </div>
+  
+  
+  
+  
+    <div style=" padding: 20px 50px;">
+  
+            <table id="customers" style="width: 100%;border-collapse: collapse;width: 100%;" *ngIf="itemsData">
+                    <tr>
+                            <th style="width: 20%;">Item</th>
+                            <th style="width: 20%;">HRS/QTY</th>
+                            <th style="width: 20%;">Rate</th>
+                            <th  style="width: 20%;" *ngIf="taxSelected=='vat'">Vat</th>
+                            <th style="width: 20%;">Amount</th>
+                    </tr>
+  
+  
+                    <tr *ngFor=" let item of itemsData">
+                        <td style="width: 20%; text-align: left;">{{item.itemName}}</td>
+                        <td style="width: 20%; text-align: center;">{{item.itexQuantity}}</td>
+                        <td style="width: 20%; text-align: center;">{{item.itemRate}} {{currencySelected}}</td>
+  
+                        <td *ngIf="taxSelected=='vat'" style="width: 20%; text-align: center;">{{item.itemVat}} {{currencySelected}}</td>
+                        <td style="width: 20%; text-align: center;">{{item.amount}} {{currencySelected}}</td>
+                    </tr>
+            
+            </table>
+  
+  
+    </div>
+  
+  
+  
+    <div style=" padding: 20px 50px;">
+  
+        <div style=" padding: 20px 50px;"></div>
+        <div style=" padding: 20px 50px;" *ngIf="totalAmounts">
+            <div style="text-align: right">
+  
+                    <span><b>Subtotal</b><small style="    margin-left: 20px;font-size: 15px; text-align: right;">{{totalAmounts.subTotal}} {{currencySelected}}</small></span><br>
+                    <span *ngIf="discountSelected!=='off'"><b> Discount</b><small style="margin-left: 20px;font-size: 15px;">{{totalAmounts.discount}} {{currencySelected}}</small></span><br>
+                    <span *ngIf="shippingSelected!=='off'"><b>Shipping</b><small style=" margin-left: 20px;font-size: 15px;">{{totalAmounts.shipping}} {{currencySelected}}</small></span><br>
+                    <span *ngIf="taxSelected!=='off'"> <b>VAT</b><small  style="margin-left: 20px;font-size: 15px;">{{totalAmounts.vat}} {{currencySelected}}</small></span><br>
+                    <span><b>Total</b><small  style="margin-left: 20px;font-size: 15px;">{{totalAmounts.total}} ({{currencySelected}})</small></span>
+            </div>
+        
+                
+        </div>
+    </div>
+  
+  
+  
+  </div>
+</div>

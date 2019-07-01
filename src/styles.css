@@ -1,0 +1,93 @@
+body {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333;
+}
+
+
+#invoice-page{
+  margin-top: 100px;
+}
+
+
+#invoice-page .example-card{
+  margin-bottom: 30px;
+}
+
+.mat-form-field-infix{
+    width: 100% !important;
+    border: none;
+    outline: none;
+}
+
+.delete-icon{
+  width: 18px;
+  cursor: pointer;
+}
+
+.table-input-form{
+  border: none;
+  width: 100%;
+}
+
+table tbody td, table thead tr {
+  width: 20% !important;
+}
+
+.input-with-symbol{
+  width: 60%;
+}
+
+.currency-cart select {
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.discount-cart  select{
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.shipping-cart  select{
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.tax-cart  select{
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.downloar-invoice-cart  {
+  padding-left: 0px !important;
+}
+
+
+.save-data-cart {
+  text-align: center;
+  }
+.save-data-cart button{
+margin-bottom: 20px;
+}
+
+
+.save-data-cart  p{
+  text-align: initial;
+  }
+
+.get-update-cart button{
+margin-top: 10px;
+}
+
+.main-cart mat-card-header{
+
+  background: cornsilk;
+  height: 25px;
+}
+
+
+
